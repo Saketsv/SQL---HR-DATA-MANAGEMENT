@@ -1,0 +1,399 @@
+The source code for building our HR department’s database is given below : 
+
+USE TESLA 
+GO
+CREATE TABLE Application (
+ApplicationID int NOT NULL,
+ApplicationCandidateID int NOT NULL, 
+JobOpeningOpeningID int NOT NULL, 
+DocumentMetaDataDocumentID int NOT NULL, 
+Date date NOT NULL,
+Status varchar(10) NOT NULL,
+CONSTRAINT Application_pk PRIMARY KEY (ApplicationID) );//creating application table with applicationid as our primary key(constraint for primary key) and other attributes to determine applicant’s data.
+
+-- Table: CandidateDetail
+CREATE TABLE CandidateDetail (
+CandidateID int NOT NULL,
+FirstName varchar(30) NOT NULL,
+MiddleName varchar(30) NOT NULL,
+LastName varchar(30) NOT NULL,
+PrimaryResidence varchar(100) NOT NULL,
+DOB date NOT NULL,
+RelevantExperience int NOT NULL,
+EmailID varchar(30) NOT NULL,
+CONSTRAINT CandidateDetail_pk PRIMARY KEY (CandidateID)
+); //creating CandidateDetail table with candidateid as our primary key(constraint for primary key) and other attributes to determine a candidate’s detail.
+
+-- Table: Complaint
+CREATE TABLE Complaint (
+ComplaintID int NOT NULL,
+Application_ApplicationID int NOT NULL,
+Description text NOT NULL,
+CONSTRAINT Complaint_pk PRIMARY KEY (ComplaintID)
+); //creating Complaint table with complaintid as our primary key(constraint for primary key) and other attributes to determine a candidate’s complaint detail.
+
+-- Table: Department
+CREATE TABLE Department (
+DepartmentID int NOT NULL,
+DepartmentName varchar(25) NOT NULL, DepartmentLocation varchar(25) NOT NULL,
+CONSTRAINT Department_pk PRIMARY KEY (DepartmentID)
+); //creating Department table with DepartmentID as our primary key(constraint for primary key) and other attributes to determine a department’s detail.
+
+-- Table: DocumentData
+CREATE TABLE DocumentMetaData (
+DocumentID int NOT NULL,
+CandidateDetailCandidateID int NOT NULL,
+ResumeLink text NOT NULL,
+ReferenceLetters text NOT NULL,
+CoverLetter text NOT NULL,
+CONSTRAINT DocumentMetaData_pk PRIMARY KEY (DocumentID)
+); //creating DocumentData table with a candidate’s documents(resume, cover letter etc)to determine their metadata detail.
+
+-- Table: HR
+CREATE TABLE HR (
+HRID int NOT NULL,
+Location_LocationID int NOT NULL, Department_DepartmentID int NOT NULL,
+ Name varchar(30) NOT NULL,
+EmailID varchar(30) NOT NULL, CONSTRAINT HR_pk PRIMARY KEY (HRID)
+); //creating HR table with HRID as our primary key(constraint for primary key) and other attributes to determine the HR’s detail.
+
+-- Table: InterviewDecision
+CREATE TABLE InterviewDecision (
+DecisionID int NOT NULL,
+Interviewer_InterviewerID int NOT NULL, Interview_InterviewID int NOT NULL,
+Decision varchar(10) NOT NULL,
+CONSTRAINT InterviewDe_pk PRIMARY KEY (DecisionID)
+); //creating InterviewDecision table with DecisionID as our primary key(constraint for primary key) and other attributes to determine the Interviews Decision detail.
+
+
+-- Table: InterviewDetails
+CREATE TABLE InterviewDetails (
+InterviewID int NOT NULL,
+Application_ApplicationID int NOT NULL,
+Date date NOT NULL,
+Mode varchar(80) NOT NULL,
+CONSTRAINT InterviewDetails_pk PRIMARY KEY (InterviewID)
+); //creating InterviewDetails table with InterviewID as our primary key(constraint for primary key) and other attributes to determine the Interview detail.
+
+-- Table: InterviewerDetails
+CREATE TABLE InterviewerDetails (
+InterviewerID int NOT NULL,
+FullName varchar(50) NOT NULL,
+EmailID varchar(30) NOT NULL,
+Department_DepartmentID int NOT NULL,
+Location_LocationID int NOT NULL,
+CONSTRAINT InterviewerDetails_pk PRIMARY KEY (InterviewerID)
+); //creating InterviewerDetails table with InterviewerID as our primary key(constraint for primary key) and other attributes to determine the Interviewer’s detail.
+-- Table: JobDetail
+CREATE TABLE JobDetail (
+JobID int NOT NULL,
+Department_DepartmentID int NOT NULL, Location_LocationID int NOT NULL,
+Description varchar(1000) NOT NULL, Requirement varchar(4000) NOT NULL,
+Vaccancy int NOT NULL,
+CONSTRAINT JobDetail_pk PRIMARY KEY (JobID)
+); //creating JobDetail table with JobID as our primary key(constraint for primary key) and other attributes to determine the Job detail.
+
+-- Table: JobOpeningDetail
+CREATE TABLE JobOpeningDetail (
+OpeningID int NOT NULL, 
+Jobs_JobID int NOT NULL,
+Vaccancy int NOT NULL,
+CONSTRAINT JobOpeningDetail_pk PRIMARY KEY (OpeningID) 
+); //creating JobOpeningDetail table with OpeningID as our primary key(constraint for primary key) and other attributes to determine the Job opening details.
+
+-- Table: Location
+CREATE TABLE Location (
+LocationID int NOT NULL,
+City varchar(25) NOT NULL,
+State varchar(3) NOT NULL,
+County varchar(25) NOT NULL,
+Country varchar(25) NOT NULL,
+Zipcode int NOT NULL,
+CONSTRAINT Location_pk PRIMARY KEY (LocationID)
+); //creating Location table with LocationID as our primary key(constraint for primary key) and other attributes to determine the location’s detail of the interview where it will be held.
+
+-- Table: Onboarding
+CREATE TABLE Onboarding (
+OnboardingID int NOT NULL,
+Application_ApplicationID int NOT NULL, ReimbursementAllotted_AllotedID int NOT NULL,
+StartDate date NOT NULL,
+CONSTRAINT Onboarding_pk PRIMARY KEY (OnboardingID)
+); //creating Onboarding table with OnboardingID as our primary key(constraint for primary key) and other attributes to determine the On boarding activities.
+
+-- Table: ReimbursementAllotted
+CREATE TABLE ReimbursementAllotted (
+AllotedID int NOT NULL,
+Application_ApplicationID int NOT NULL,
+CompensationAmount int NOT NULL,
+CONSTRAINT ReimbursementAllotted_pk PRIMARY KEY (AllotedID)
+); //creating ReimbursementAllotted table with AllotedID as our primary key(constraint for primary key) and other attributes to determine the amount of reiumbersement allotted to each candidates.
+
+-- Table: ReimbursementRequested
+CREATE TABLE ReimbursementRequested (
+RequestID int NOT NULL,
+Application_ApplicationID int NOT NULL,
+Amount int NOT NULL,
+CONSTRAINT ReimbursementRequested_pk PRIMARY KEY (RequestID)
+); //creating ReimbursementRequested table with RequestID as our primary key(constraint for primary key) and other attributes to determine the amount of money request for reiumbersement by each candidates.
+
+-- Table: Test
+CREATE TABLE Test (
+TestID int NOT NULL,
+ApplicationApplicationID int NOT NULL,
+Date date NOT NULL,
+Attempted varchar(30) NOT NULL,
+Difficulty varchar(30) NOT NULL, CONSTRAINT Test_pk PRIMARY KEY (TestID)
+); //creating Test table with TestID as our primary key(constraint for primary key) and other attributes to determine the applicant’s test details.
+
+-- Table: TestResult
+CREATE TABLE TestResult (
+TestResultID int NOT NULL,
+Test_TestID int NOT NULL,
+ResultDeclared date NOT NULL,
+Results varchar(10) NOT NULL,
+CONSTRAINT TestResult_pk PRIMARY KEY (TestResultID)
+); //creating TestResult table with TestResultID as our primary key(constraint for primary key) and other attributes to determine the test results of each candidate.
+
+-- Table: TravelDetails
+CREATE TABLE TravelDetails(
+TravelID int NOT NULL,
+InterviewDetails_InterviewID int FOREIGN KEY REFERENCES InterviewDetails 
+(InterviewID), 
+CandidateDetail_CandidateID int FOREIGN KEY REFERENCES CandidateDetail 
+(CandidateID), 
+CONSTRAINT TravelDetails_PK PRIMARY KEY (TravelID) 
+); //creating TravelDetails table with TravelID as our primary key(constraint for primary key), Candidate and InterviewDetails as the foreign key and other attributes to determine the candidates travel details.
+
+-- Table: AirplaneReservation
+CREATE TABLE AirplaneReservation(
+AirlineID int NOT NULL,
+TicketNumber int NOT NULL,
+AirlineCompany varchar(50) NOT NULL,
+TravelDate date NOT NULL,
+DepartureLocation varchar(30) NOT NULL,
+Destination varchar(50) NOT NULL,
+TicketPrice int NOT NULL,
+TravelDetails_TravelID int FOREIGN KEY REFERENCES TravelDetails (TravelID),
+CONSTRAINT AirplaneReservation_PK PRIMARY KEY (AirlineID)
+); //creating AirplaneReservation table with AirlineID as our primary key(constraint for primary key) TravelID as the foreign key and other attributes to determine the candidates airline booking details.
+
+-- Table: CarRental
+CREATE TABLE CarRental(
+CarRentalID int NOT NULL,
+ReceiptNumber int NOT NULL,
+RentalCompany varchar(30) NOT NULL,
+TotalFare int NOT NULL,
+TravelDetails_TravelID int FOREIGN KEY REFERENCES TravelDetails (TravelID),
+CONSTRAINT CarRental_PK PRIMARY KEY (CarRentalID)
+); //creating CarRental table with CarRentalID as our primary key(constraint for primary key) TravelID as the foreign key and other attributes to determine the candidates car rental booking details.
+
+-- Table: HotelReservation
+CREATE TABLE HotelReservation(
+ReservationID int NOT NULL,
+HotelReceipt varchar(50) NOT NULL,
+HotelName varchar(30) NOT NULL,
+CheckInDate DATE NOT NULL,
+CheckOutDate DATE NOT NULL,
+CostPerNight int NOT NULL,
+NightsStayed int NOT NULL,
+TravelDetails_TravelID int FOREIGN KEY REFERENCES TravelDetails (TravelID),
+CONSTRAINT HotelReservation_PK PRIMARY KEY (ReservationID)
+); //creating HotelReservation table with ReservationID as our primary key(constraint for primary key), TravelID as the foreign key and other attributes to determine the candidates hotel reservation booking details.
+
+
+INSERT INTO Application VALUES 
+(1200,201,601,601,'05/20/2021','Rejected'), 
+(1201,201,602,602,'05/27/2021','Waiting'), 
+(1202,202,604,603,'08/18/2021','Waiting'), 
+(1203,204,603,604,'05/01/2021','Active'), 
+(1204,204,605,604,'02/05/2021','Rejected'); //populating the table with application values
+
+INSERT INTO Department VALUES--dept 
+(1,'Software','Seattle'), (2,'Operations','Atlanta'), (3,'Marketing','Denver'), (4,'Audit','Irvine'), (5,'HumanResources','Detroit')
+GO
+INSERT INTO Location VALUES---loc
+ (100,'Seattle','WA','Onondaga','USA',13210), (101,'Atlanta','GA','Fulton','USA',31032), (102,'Denver','CO','Adams','USA',33001), (103,'Irvine','CA','Tulare','USA',32324), (104,'Detroit','MI','Allegan','USA',411014);
+INSERT INTO InterviewerDetails VALUES---interviewerdetails 
+(400,'Aakash Verma','averma@tesla.com',1,100), (401,'Hemant Mahto','hmahto@tesla.com',2,100), (402,'Huzaif Kherani','hkherani@tesla.com',2,101), (403,'Ashitosh Gupta', 'agupta@tesla.com',3,102), (404,'Heena Shaikh','hshaikh@tesla.com',4,104); //populating the table with interviewers detail values
+INSERT INTO HR VALUES -- HR 
+(2400,100,1,'Sahil','spatel@tesla.hr.com'), (2401,102,2,'Asim','asimsh@tesla.hr.com'), (2402,103,3,'Vishal','vish@tesla.hr.com'), (2403,104,4,'Shruti','shrut@tesla.hr.com'), (2404,104,5,'Nehil','nehil@tesla.hr.com');
+INSERT INTO JobDetail VALUES --JobDetail 
+(500,1,101,'Software Engineer/IT Consultant','CS',100), (501,1,103,'Associate ', 'BCS',100),
+(502,2,102,'Junior Consultant','Btech',100), (503,3,104,'Big Manager','MBA',100),
+(504,5,100,'Con Manager','BBA',100);
+INSERT INTO JobOpeningDetail VALUES---jobepening 
+(600,500,100),
+(601,504,100),
+(602,502,100),
+(603,500,100), 
+(604,503,100);
+INSERT INTO CandidateDetail VALUES ---candidatetable 
+(201,'Saket','Suryakant','Sharma','India','04/9/1997',5,'sak1@hotmail.com'), 
+(202,'Nirali','Dharmesh','Kabli','India','1/14/1992',4,'nkabli6@gmail.com'), 
+(203,'Malav','Astha','Tanishq','United Kingdom','10/1/1992',4,'mala2@hotmail.com'), 
+(204,'Naman','Camila','Sharma','Pakistan','7/18/2000',8, 'momo12@live.com'), 
+(205,'Sam','Nirali','Kabli','Seattle','05/12/1991',8,'sam12@gmail.com');
+INSERT INTO CandidateDetail VALUES ---candidatetable 
+(206,'Jaykant','Shirke','Sharma','India','05/9/1997',2,'sak1@hotmail.com'), 
+(207,'Arpitha','Raghavan','Kaushik','India','11/4/1992',3,'nkabli6@gmail.com'), 
+(208,'Jas','Nipun','Mann','Seattle','1/10/1992',4,'mala2@hotmail.com'), 
+(209,'Raj','Prakash','Galsingh','United Kingdom','7/8/2000',3, 'momo12@live.com'), 
+(210,'Joey','Samuel','Bing','Pakistan','10/22/1991',9,'sam12@gmail.com'); //populating the table with candidate details values
+INSERT INTO DocumentMetaData VALUES---documentsmetadata 
+(600,205,'https://drive.com/pp/resume.pdf','https://drive.com/pp/ref.pdf','https://drive.com/pp/r letter.pdf'), 
+(601,201,'https://drive.com/mj/msume.pdf','https://drive.com/mj/fdoc.pdf','https://drive.com/mj /mj_cl.pdf'), 
+(602,202,'https://drive.com/em/res.pdf','https://drive.com/em/EMref.pdf','https://drive.com/em/ EMcoverletter.pdf'),
+(603,203,'https://drive.com/sp/vimra.pdf','https://drive.com/sp/vim.pdf','https://drive.com/ef/vi mcover.pdf'), 
+(604,204,'https://drive.com/ef/ehg_resume.pdf','https://drive.com/ef/ef_ref.pdf','https://drive.c om/sp/rletter.pdf');
+INSERT INTO Complaint VALUES -- complaint 
+(1100,1201,'Audio Quality was not code'), (1101,1202,'The interview was not as per desc'), (1102,1201,'The interviewer was very rude'), (1103,1202,'bad'),
+(1104,1201,'interviewer was very casual');
+INSERT INTO Test VALUES -- test 
+(1400,1200,'05/02/2022','Yes','easy'), (1401,1201,'05/02/2022','Yes','med'), (1402,1202,'05/02/2022','Yes','diff'), (1403,1203,'05/02/2022','Yes','easy'), (1404,1204,'01/15/2022','Yes','diff');
+INSERT INTO TestResult VALUES--test result 
+(1700,1401,'12/8/2021','Yes'), (1701,1405,'11/8/2021','Yes'), (1702,1402,'10/8/2021','Yes'), (1703,1403,'9/8/2021','Yes'), (1704,1404,'2/8/2021','Yes');
+INSERT INTO InterviewDetails VALUES--InterviewDetails 
+(1100,1201,'05/13/2022','verbal'), 
+(1101,1201,'05/10/2022','phonecall'), 
+(1102,1202,'05/17/2022','online'), 
+(1103,1203,'05/18/2022','in-person'), 
+(1104,1204,'02/01/2022','Online');
+INSERT INTO InterviewDecision VALUES --InterviewDecision 
+(1900,400,1100,1),
+(1901,402,1100,0),
+(1902,400,1102,1),
+(1903,403,1100,1), (1904,402,1101,1), (1205,400,1101,1),
+
+(1206,401,1103,1), (1207,404,1104,0);
+
+INSERT INTO TravelDetails VALUES --TravelDetails
+(2000,1100,201),
+(2001,1101,202),
+(2002,1102,203),
+(2003,1103,204),
+(2004,1104,205);
+
+INSERT INTO CarRental VALUES --CarRental
+(1111,100,'Avis',170,2000),
+(1112,101,'Budget',165,2001),
+(1113,102,'Hertz Car Rental',155,2002),
+(1114,103,'Zipcar',200,2003),
+(1115,104,'Enterprise',185,2004);
+
+INSERT INTO AirplaneReservation VALUES --AirplaneReservation
+(0701,3459100,'Delta Airline','12/12/2022','Denver','Houston',350,2000),
+(0702,3460101,'Air Emirates','12/03/3033','Austin','Houston',459,2001),
+(0703,3461102,'Qatar Airways','12/09/2022','Syracuse','Houston',550,2002),
+(0704,3462103,'JetBlue','12/20/2022','Irvine','Houston',670,2003),
+(0705,3463104,'Etihad','12/24/2022','Chicago','Houston',450,2004); //populating the table with airline reservation values
+
+INSERT INTO HotelReservation VALUES --HotelReservation
+(5100,'UG34HJT1','Marriot','12/23/2022','12/28/2022',350,5,2000),
+(5101,'SN678HWT','Sheraton','12/24/3033','12/29/2022',459,5,2001),
+(5102,'34RTHY2D','Hyatt','12/15/2022','12/20/2022',550,5,2002),
+(5103,'WRT56THY','Hilton','12/17/2022','12/23/2022',670,6,2003),
+(5104,'SF234HUN','Radisson','12/20/2022','12/26/2022',450,6,2004);
+
+INSERT INTO ReimbursementAllotted VALUES -- ReimbursementAllotted 
+(1400,1200,21000),
+(1401,1201,14000),
+(1402,1202,12000),
+(1403,1203,45000), (1404,1202,45000);
+INSERT INTO ReimbursementAllotted VALUES -- ReimbursementAllotted 
+(1405,1205,21000),
+(1406,1206,11000),
+(1407,1207,10000),
+(1408,1208,45000), (1409,1209,5000); //populating the table with reimbursement values
+INSERT INTO ReimbursementRequested VALUES (1500,800,1200),
+(1501,801,850),
+(1502,802,700),
+(1503,803,1500), (1504,804,2000);
+INSERT INTO Onboarding VALUES (1600,800,1400,'06/01/2022'), (1601,801,1401,'06/01/2022'), (1602,802,1402,'06/01/2022'), (1603,803,1403,'06/01/2022'), (1604,804,1404,'06/01/2022');
+-- foreign keys
+-- Reference: Application_Candidate (table: Application)
+ALTER TABLE Application ADD CONSTRAINT Application_Candidate_FK
+FOREIGN KEY (ApplicationCandidateID) REFERENCES CandidateDetail (CandidateID)
+;//foreign key constraints
+-- Reference: Application_Documents (table: Application)
+ALTER TABLE Application ADD CONSTRAINT Application_Documents
+FOREIGN KEY (DocumentMetaDataDocumentID) REFERENCES DocumentMetaData (DocumentID)
+;
+-- Reference: Application_JobOpening (table: Application)
+ALTER TABLE Application ADD CONSTRAINT Application_JobOpening
+FOREIGN KEY (JobOpeningOpeningID) REFERENCES JobOpeningDetail (OpeningID)
+;
+-- Reference: Complain_Application (table: Complaint)
+ALTER TABLE Complaint ADD CONSTRAINT Complain_Application
+FOREIGN KEY (Application_ApplicationID) REFERENCES Application (ApplicationID)
+ ;
+-- Reference: Documents_Candidate (table: DocumentMetaData)
+ALTER TABLE DocumentMetaData ADD CONSTRAINT Documents_Candidate
+FOREIGN KEY (CandidateDetailCandidateID) REFERENCES CandidateDetail (CandidateID)
+;
+-- Reference: HR_Department (table: HR)
+ALTER TABLE HR ADD CONSTRAINT HR_Department
+FOREIGN KEY (Department_DepartmentID) REFERENCES Department (DepartmentID)
+;
+-- Reference: HR_Location (table: HR)
+ALTER TABLE HR ADD CONSTRAINT HR_Location
+FOREIGN KEY (Location_LocationID) REFERENCES Location (LocationID)
+;
+-- Reference: Interview_Application (table: InterviewDetails)
+ALTER TABLE InterviewDetails ADD CONSTRAINT Interview_Application
+FOREIGN KEY (Application_ApplicationID) REFERENCES Application (ApplicationID)
+;
+-- Reference: Interviewer_Department (table: InterviewerDetails)
+ALTER TABLE InterviewerDetails ADD CONSTRAINT Interviewer_Department
+FOREIGN KEY (Department_DepartmentID) REFERENCES Department (DepartmentID)
+;
+-- Reference: Interviewer_Location (table: InterviewerDetails)
+ALTER TABLE InterviewerDetails ADD CONSTRAINT Interviewer_Location
+FOREIGN KEY (Location_LocationID) REFERENCES Location (LocationID)
+;
+-- Reference: InterviewersDescision_Interview (table: InterviewDe)
+ALTER TABLE InterviewDe ADD CONSTRAINT InterviewersDescision_Interview
+FOREIGN KEY (Interview_InterviewID) REFERENCES InterviewDetails (InterviewID) ;
+-- Reference: InterviewersDescision_Interviewer (table: InterviewDe)
+ALTER TABLE InterviewDe ADD CONSTRAINT InterviewersDescision_Interviewer
+FOREIGN KEY (Interviewer_InterviewerID) REFERENCES InterviewerDetails (InterviewerID)
+-- Reference: JobOpening_Jobs (table: JobOpeningDetail)
+ALTER TABLE JobOpeningDetail ADD CONSTRAINT JobOpening_Jobs
+FOREIGN KEY (Jobs_JobID) REFERENCES JobDetail (JobID)
+;
+-- Reference: Jobs_Department (table: JobDetail)
+ALTER TABLE JobDetail ADD CONSTRAINT Jobs_Department
+FOREIGN KEY (Department_DepartmentID) REFERENCES Department (DepartmentID)
+;
+-- Reference: Jobs_Location (table: JobDetail)
+ALTER TABLE JobDetail ADD CONSTRAINT Jobs_Location
+FOREIGN KEY (Location_LocationID) REFERENCES Location (LocationID)
+;
+-- Reference: Onboarding_Application (table: Onboarding)
+ALTER TABLE Onboarding ADD CONSTRAINT Onboarding_Application
+FOREIGN KEY (Application_ApplicationID) REFERENCES Application (ApplicationID)
+;
+-- Reference: Onboarding_ReimbursementAllotted (table: Onboarding)
+ALTER TABLE Onboarding ADD CONSTRAINT Onboarding_ReimbursementAllotted
+FOREIGN KEY (ReimbursementAllotted_AllotedID) REFERENCES ReimbursementAllotted (AllotedID)
+;
+-- Reference: ReimbursementAllotted_Application (table: ReimbursementAllotted)
+ALTER TABLE ReimbursementAllotted ADD CONSTRAINT ReimbursementAllotted_Application
+
+FOREIGN KEY (Application_ApplicationID) REFERENCES Application (ApplicationID)
+;
+-- Reference: ReimbursementRequested_Application (table: ReimbursementRequested) 
+ALTER TABLE ReimbursementRequested ADD CONSTRAINT ReimbursementRequested_Application
+FOREIGN KEY (Application_ApplicationID) REFERENCES Application (ApplicationID)
+;
+-- Reference: TestResult_Test (table: TestResult)
+ALTER TABLE TestResult ADD CONSTRAINT TestResult_Test
+FOREIGN KEY (Test_TestID) REFERENCES Test (TestID)
+;
+-- Reference: Test_Application (table: Test)
+ALTER TABLE Test ADD CONSTRAINT Test_Application
+FOREIGN KEY (ApplicationApplicationID) REFERENCES Application (ApplicationID)
+;
+-- Reference: TravelDetails_Interviewer (table: TravelDetails)
+ALTER TABLE TravelDetails ADD CONSTRAINT TravelDetails_Interviewer
+FOREIGN KEY (Interviewer_InterviewerID) REFERENCES InterviewerDetails (InterviewerID)
+;
